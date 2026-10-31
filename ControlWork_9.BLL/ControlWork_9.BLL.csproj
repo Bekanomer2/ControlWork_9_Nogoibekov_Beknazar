@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>ControWork_9.BLL</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ControlWork_9.DAL\ControlWork_9.DAL.csproj" />
+      <ProjectReference Include="..\ControlWork_9.Models\ControlWork_9.Models.csproj" />
+    </ItemGroup>
+
+</Project>
