@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ControWork_9.DAL\ControWork_9.DAL.csproj" />
+      <ProjectReference Include="..\ControWork_9.Models\ControWork_9.Models.csproj" />
+    </ItemGroup>
+
+</Project>
