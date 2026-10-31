@@ -22,10 +22,14 @@ public class UserController : Controller
 
     [Authorize]
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+            return RedirectToAction("Login", "Account");
+        return View(user);
     }
+
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetBalance()
@@ -89,5 +93,19 @@ public class UserController : Controller
             return Json(new { success = true, message = "Перевод успешно выполнен!" });
 
         return Json(new { success = false, message = "Произошла ошибка при переводе" });
+    }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> Transactions(DateTime? fromDate, DateTime? toDate)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null)
+            return RedirectToAction("Login", "Account");
+        ViewBag.AccountNumber = user.AccountNumber;
+        ViewBag.FromDate = fromDate?.ToString("yyyy-MM-dd");
+        ViewBag.ToDate = toDate?.ToString("yyyy-MM-dd");
+        var list = await _transactionService.GetUserTransactionsAsync(user.AccountNumber, fromDate, toDate);
+        return View(list);
     }
 }

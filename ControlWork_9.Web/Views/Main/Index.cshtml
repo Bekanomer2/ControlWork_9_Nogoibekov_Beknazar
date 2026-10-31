@@ -25,6 +25,14 @@
                             <div class="text-muted small">
                                 Личный счет: <strong class="badge bg-secondary font-monospace">@Model.CurrentUser.AccountNumber</strong>
                             </div>
+                            <div class="mt-2 d-flex gap-2">
+                                <a asp-controller="User" asp-action="Index" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-person me-1"></i>Личный кабинет
+                                </a>
+                                <a asp-controller="User" asp-action="Transactions" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-clock-history me-1"></i>Журнал транзакций
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -175,11 +183,11 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
+                    alert(response.message);
                     if (response.success) {
                         $('#replenishForm')[0].reset();
                         updateBalance();
                     }
-                    alert(response.message);
                 },
                 error: function () {
                     alert('Произошла ошибка при отправке запроса');
@@ -195,11 +203,11 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
+                    alert(response.message);
                     if (response.success) {
                         $('#transferForm')[0].reset();
                         updateBalance();
                     }
-                    alert(response.message);
                 },
                 error: function () {
                     alert('Произошла ошибка при отправке запроса');

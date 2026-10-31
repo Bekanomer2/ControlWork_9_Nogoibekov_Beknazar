@@ -5,4 +5,5 @@ namespace ControWork_9.DAL.Repositories.Interfaces;
 public interface ITransactionRepository
 {
     Task CreateTransactionAsync(Transaction transaction);
+    Task<List<Transaction>> GetUserTransactionsAsync(string accountNumber, DateTime? fromDate, DateTime? toDate);
 }

@@ -17,4 +17,9 @@ public class TransactionService : ITransactionService
     {
         await _transactionRepository.CreateTransactionAsync(transaction);
     }
+
+    public async Task<List<Transaction>> GetUserTransactionsAsync(string accountNumber, DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        return await _transactionRepository.GetUserTransactionsAsync(accountNumber, fromDate, toDate);
+    }
 }
