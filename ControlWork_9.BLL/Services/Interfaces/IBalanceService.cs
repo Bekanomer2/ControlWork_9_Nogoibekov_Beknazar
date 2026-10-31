@@ -3,4 +3,5 @@
 public interface IBalanceService
 {
     Task<bool> Replenishment(decimal amount, string toPersonalNumber);
+    Task<bool> TransferMoneyAsync(string fromAccountNumber, string toAccountNumber, decimal amount);
 }

@@ -20,11 +20,9 @@ public class BalanceService : IBalanceService
     {
         if (amount <= 0 || string.IsNullOrWhiteSpace(toPersonalNumber))
             return false;
-
         bool balanceUpdated = await _balanceRepository.UpdateBalanceAsync(toPersonalNumber, amount);
         if (!balanceUpdated)
             return false;
-
         var transaction = new Transaction
         {
             Amount = amount,
@@ -35,6 +33,25 @@ public class BalanceService : IBalanceService
 
         await _transactionRepository.CreateTransactionAsync(transaction);
 
+        return await _balanceRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> TransferMoneyAsync(string fromAccountNumber, string toAccountNumber, decimal amount)
+    {
+        if (amount <= 0 || string.IsNullOrWhiteSpace(toAccountNumber) || string.IsNullOrWhiteSpace(fromAccountNumber))
+            return false;
+        bool transferIsSuccess = await _balanceRepository.TransferMoneyAsync(fromAccountNumber, toAccountNumber, amount);
+        if(!transferIsSuccess)
+            return false;
+        var transaction = new Transaction
+        {
+            Amount = amount,
+            FromPersonalNumber =  fromAccountNumber,
+            ToPersonalNumber = toAccountNumber,
+            Date = DateTime.UtcNow,
+            Type = TransactionTypes.Перевод
+        };
+        await _transactionRepository.CreateTransactionAsync(transaction);
         return await _balanceRepository.SaveChangesAsync();
     }
 }

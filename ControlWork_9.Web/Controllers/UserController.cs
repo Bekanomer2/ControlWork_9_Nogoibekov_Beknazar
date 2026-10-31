@@ -26,7 +26,7 @@ public class UserController : Controller
     {
         return View();
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetBalance()
     {
@@ -58,5 +58,36 @@ public class UserController : Controller
             return Json(new { success = true, message = "Счет успешно пополнен!" });
 
         return Json(new { success = false, message = "Произошла ошибка при пополнении счета" });
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> TransferMoney(decimal? amount, string? toPersonalNumber)
+    {
+        if (string.IsNullOrWhiteSpace(toPersonalNumber))
+            return Json(new { success = false, message = "Укажите номер счета получателя" });
+
+        if (!amount.HasValue || amount.Value <= 0)
+            return Json(new { success = false, message = "Сумма перевода должна быть больше нуля" });
+
+        var currentUser = await _userManager.GetUserAsync(User);
+        if (currentUser == null)
+            return RedirectToAction("Login", "Account");
+
+        if (currentUser.AccountNumber == toPersonalNumber)
+            return Json(new { success = false, message = "Нельзя перевести средства на свой собственный счет" });
+
+        if (currentUser.Balance < amount.Value)
+            return Json(new { success = false, message = "Недостаточно средств на счете" });
+
+        var targetUser = await _userManager.Users.FirstOrDefaultAsync(x => x.AccountNumber == toPersonalNumber);
+        if (targetUser == null)
+            return Json(new { success = false, message = "Пользователь с данным личным счетом не найден в системе" });
+
+        bool transferMoneyIsSuccess = await _balanceService.TransferMoneyAsync(currentUser.AccountNumber, toPersonalNumber, amount.Value);
+        if (transferMoneyIsSuccess)
+            return Json(new { success = true, message = "Перевод успешно выполнен!" });
+
+        return Json(new { success = false, message = "Произошла ошибка при переводе" });
     }
 }
