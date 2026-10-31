@@ -4,6 +4,7 @@ using ControWork_9.DAL.Data;
 using ControWork_9.DAL.Repositories;
 using ControWork_9.DAL.Repositories.Interfaces;
 using ControWork_9.Models;
+using ControWork_9.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,7 +30,27 @@ builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IBalanceService, BalanceService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IClientServiceAccountRepository, ClientServiceAccountRepository>();
+builder.Services.AddScoped<IClientServiceAccountService, ClientServiceAccountService>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<BalanceContext>();
+    if (!await context.Providers.AnyAsync())
+    {
+        await context.Providers.AddRangeAsync(
+            new Provider { Name = "O!", Category = ProvidersCategories.Mobile },
+            new Provider { Name = "Beeline", Category = ProvidersCategories.Mobile },
+            new Provider { Name = "MegaCom", Category = ProvidersCategories.Mobile },
+            new Provider { Name = "Акнет", Category = ProvidersCategories.Internet },
+            new Provider { Name = "Кыргызтелеком", Category = ProvidersCategories.Internet },
+            new Provider { Name = "Северэлектро", Category = ProvidersCategories.Utilities }
+        );
+        await context.SaveChangesAsync();
+    }
+}
 
 if (!app.Environment.IsDevelopment())
 {

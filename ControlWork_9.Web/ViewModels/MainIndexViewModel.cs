@@ -7,6 +7,7 @@ public class MainIndexViewModel
 {
     public bool IsAuthenticated { get; set; }
     public User? CurrentUser { get; set; }
+    public List<Provider> Providers { get; set; } = new();
 
     [Required(ErrorMessage = "Укажите номер личного счета")]
     [RegularExpression(@"^\d{6}$", ErrorMessage = "Номер личного счета должен состоять из 6 цифр")]

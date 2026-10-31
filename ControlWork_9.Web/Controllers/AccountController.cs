@@ -1,4 +1,4 @@
-﻿using ControWork_9.BLL.Services.Interfaces;
+using ControWork_9.BLL.Services.Interfaces;
 using ControWork_9.Models;
 using ControWork_9.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -14,13 +14,25 @@ public class AccountController : Controller
     private readonly IWebHostEnvironment _environment;
     private readonly IValidator _validator;
     private readonly IPersonalNumberGenerator _personalNumberGenerator;
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IWebHostEnvironment environment,  IValidator validator,  IPersonalNumberGenerator personalNumberGenerator)
+    private readonly IClientServiceAccountService _clientServiceAccountService;
+    private readonly IServiceScopeFactory _scopeFactory;
+
+    public AccountController(
+        UserManager<User> userManager,
+        SignInManager<User> signInManager,
+        IWebHostEnvironment environment,
+        IValidator validator,
+        IPersonalNumberGenerator personalNumberGenerator,
+        IClientServiceAccountService clientServiceAccountService,
+        IServiceScopeFactory scopeFactory)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _environment = environment;
         _validator = validator;
         _personalNumberGenerator = personalNumberGenerator;
+        _clientServiceAccountService = clientServiceAccountService;
+        _scopeFactory = scopeFactory;
     }
     
     [HttpGet]
@@ -64,6 +76,13 @@ public class AccountController : Controller
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(userToCreate, isPersistent: false);
+                int newUserId = userToCreate.Id;
+                _ = Task.Run(async () =>
+                {
+                    using var scope = _scopeFactory.CreateScope();
+                    var service = scope.ServiceProvider.GetRequiredService<IClientServiceAccountService>();
+                    await service.CreateClientServiceAccounts(newUserId);
+                });
                 return RedirectToAction("Index", "Main");
             }
             foreach (var error in result.Errors)

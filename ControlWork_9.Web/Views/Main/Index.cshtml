@@ -152,6 +152,60 @@
             </div>
         }
     </div>
+
+    @if (Model.IsAuthenticated)
+    {
+        <div class="row">
+            <div class="col-12 mb-3">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-warning text-dark py-2">
+                        <h6 class="mb-0 fw-bold">
+                            <i class="bi bi-lightning-charge me-2"></i>Оплата услуг
+                        </h6>
+                    </div>
+                    <div class="card-body p-3">
+                        <form id="payForm">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-semibold mb-1">Поставщик услуг</label>
+                                    <select name="providerId" class="form-select" required>
+                                        <option value="" disabled selected>Выберите поставщика</option>
+                                        @foreach (var provider in Model.Providers)
+                                        {
+                                            <option value="@provider.Id">@provider.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-semibold mb-1">Номер реквизита</label>
+                                    <input type="text"
+                                           name="serviceNumber"
+                                           class="form-control"
+                                           placeholder="Введите номер реквизита"
+                                           required />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label small fw-semibold mb-1">Сумма оплаты (сом)</label>
+                                    <input type="number"
+                                           name="amount"
+                                           class="form-control"
+                                           placeholder="Введите сумму"
+                                           min="1"
+                                           step="any"
+                                           required />
+                                </div>
+                                <div class="col-md-2 d-grid">
+                                    <button type="submit" class="btn btn-warning fw-bold py-2">
+                                        <i class="bi bi-check2-circle me-1"></i>Оплатить
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts {
@@ -183,11 +237,11 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
-                    alert(response.message);
                     if (response.success) {
                         $('#replenishForm')[0].reset();
                         updateBalance();
                     }
+                    alert(response.message);
                 },
                 error: function () {
                     alert('Произошла ошибка при отправке запроса');
@@ -203,11 +257,31 @@
                 type: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
-                    alert(response.message);
                     if (response.success) {
                         $('#transferForm')[0].reset();
                         updateBalance();
                     }
+                    alert(response.message);
+                },
+                error: function () {
+                    alert('Произошла ошибка при отправке запроса');
+                }
+            });
+        });
+
+        $('#payForm').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("PayForTheService", "User")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $('#payForm')[0].reset();
+                        updateBalance();
+                    }
+                    alert(response.message);
                 },
                 error: function () {
                     alert('Произошла ошибка при отправке запроса');

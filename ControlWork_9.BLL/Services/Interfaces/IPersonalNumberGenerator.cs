@@ -3,4 +3,5 @@
 public interface IPersonalNumberGenerator
 {
     Task<string> GeneratePersonalNumber();
+    Task<string> GenerateServiceAccountNumber();
 }

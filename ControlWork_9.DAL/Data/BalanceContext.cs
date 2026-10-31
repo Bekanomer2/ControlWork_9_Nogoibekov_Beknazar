@@ -9,5 +9,7 @@ public class BalanceContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Provider> Providers { get; set; }
+    public DbSet<ClientServiceAccount> ClientServiceAccounts { get; set; }
     public BalanceContext(DbContextOptions<BalanceContext> options) : base(options){}
 }

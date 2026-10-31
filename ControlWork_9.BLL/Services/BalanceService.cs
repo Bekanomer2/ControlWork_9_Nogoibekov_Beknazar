@@ -8,12 +8,12 @@ namespace ControWork_9.BLL.Services;
 public class BalanceService : IBalanceService
 {
     private readonly IBalanceRepository _balanceRepository;
-    private readonly ITransactionRepository _transactionRepository;
+    private readonly ITransactionService _transactionService;
 
-    public BalanceService(IBalanceRepository balanceRepository, ITransactionRepository transactionRepository)
+    public BalanceService(IBalanceRepository balanceRepository, ITransactionService transactionService)
     {
         _balanceRepository = balanceRepository;
-        _transactionRepository = transactionRepository;
+        _transactionService = transactionService;
     }
 
     public async Task<bool> Replenishment(decimal amount, string toPersonalNumber)
@@ -31,7 +31,7 @@ public class BalanceService : IBalanceService
             Type = TransactionTypes.Пополнение
         };
 
-        await _transactionRepository.CreateTransactionAsync(transaction);
+        await _transactionService.CreateTransactionAsync(transaction);
 
         return await _balanceRepository.SaveChangesAsync();
     }
@@ -51,7 +51,26 @@ public class BalanceService : IBalanceService
             Date = DateTime.UtcNow,
             Type = TransactionTypes.Перевод
         };
-        await _transactionRepository.CreateTransactionAsync(transaction);
+        await _transactionService.CreateTransactionAsync(transaction);
+        return await _balanceRepository.SaveChangesAsync();
+    }
+
+    public async Task<bool> PayForTheServiceAsync(string fromAccountNumber, int providerId, string serviceNumber, decimal amount)
+    {
+        if (amount <= 0 || string.IsNullOrWhiteSpace(fromAccountNumber) || string.IsNullOrWhiteSpace(serviceNumber))
+            return false;
+        bool isSuccess = await _balanceRepository.PayForTheServiceAsync(fromAccountNumber, providerId, serviceNumber, amount);
+        if (!isSuccess)
+            return false;
+        var transaction = new Transaction
+        {
+            Amount = amount,
+            FromPersonalNumber = fromAccountNumber,
+            ToPersonalNumber = serviceNumber,
+            Date = DateTime.UtcNow,
+            Type = TransactionTypes.Оплата
+        };
+        await _transactionService.CreateTransactionAsync(transaction);
         return await _balanceRepository.SaveChangesAsync();
     }
 }

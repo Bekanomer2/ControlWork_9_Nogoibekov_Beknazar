@@ -34,6 +34,17 @@ public class BalanceRepository : IBalanceRepository
         return true;
     }
 
+    public async Task<bool> PayForTheServiceAsync(string fromAccountNumber, int providerId, string serviceNumber, decimal amount)
+    {
+        var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.AccountNumber == fromAccountNumber);
+        var serviceAccount = await _context.ClientServiceAccounts.FirstOrDefaultAsync(x => x.AccountNumber == serviceNumber && x.ProviderId == providerId);
+        if (currentUser == null || serviceAccount == null || currentUser.Balance < amount)
+            return false;
+        currentUser.Balance -= amount;
+        serviceAccount.Balance += amount;
+        return true;
+    }
+
     public async Task<bool> SaveChangesAsync()
     {
         int savedRows = await _context.SaveChangesAsync();
