@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="0" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="0" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Title" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="PersonalCabinet" xml:space="preserve">
+    <value>Personal Cabinet</value>
+  </data>
+  <data name="PersonalAccount" xml:space="preserve">
+    <value>Personal Account</value>
+  </data>
+  <data name="TransactionJournal" xml:space="preserve">
+    <value>Transactions</value>
+  </data>
+  <data name="CurrentBalance" xml:space="preserve">
+    <value>Current Balance</value>
+  </data>
+  <data name="Som" xml:space="preserve">
+    <value>Som</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to BankApp!</value>
+  </data>
+  <data name="WelcomeDesc" xml:space="preserve">
+    <value>Sign in to check your balance, or top up another user's account.</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="ReplenishTitle" xml:space="preserve">
+    <value>Top Up Account</value>
+  </data>
+  <data name="ReplenishAccountLabel" xml:space="preserve">
+    <value>Personal Account Number</value>
+  </data>
+  <data name="ReplenishAccountPlaceholder" xml:space="preserve">
+    <value>Enter 6 digits</value>
+  </data>
+  <data name="ReplenishAmountLabel" xml:space="preserve">
+    <value>Amount (Som)</value>
+  </data>
+  <data name="ReplenishAmountPlaceholder" xml:space="preserve">
+    <value>Enter amount</value>
+  </data>
+  <data name="ReplenishBtn" xml:space="preserve">
+    <value>Top Up</value>
+  </data>
+  <data name="TransferTitle" xml:space="preserve">
+    <value>Transfer Funds</value>
+  </data>
+  <data name="TransferAccountLabel" xml:space="preserve">
+    <value>Recipient Account</value>
+  </data>
+  <data name="TransferAccountPlaceholder" xml:space="preserve">
+    <value>Enter 6 digits of recipient</value>
+  </data>
+  <data name="TransferAmountLabel" xml:space="preserve">
+    <value>Transfer Amount (Som)</value>
+  </data>
+  <data name="TransferAmountPlaceholder" xml:space="preserve">
+    <value>Enter transfer amount</value>
+  </data>
+  <data name="TransferBtn" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="PayTitle" xml:space="preserve">
+    <value>Pay Services</value>
+  </data>
+  <data name="PayProviderLabel" xml:space="preserve">
+    <value>Service Provider</value>
+  </data>
+  <data name="PayProviderSelect" xml:space="preserve">
+    <value>Select provider</value>
+  </data>
+  <data name="PayRequisiteLabel" xml:space="preserve">
+    <value>Requisite Number</value>
+  </data>
+  <data name="PayRequisitePlaceholder" xml:space="preserve">
+    <value>Enter requisite number</value>
+  </data>
+  <data name="PayAmountLabel" xml:space="preserve">
+    <value>Payment Amount (Som)</value>
+  </data>
+  <data name="PayAmountPlaceholder" xml:space="preserve">
+    <value>Enter amount</value>
+  </data>
+  <data name="PayBtn" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+</root>

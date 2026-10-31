@@ -1,3 +1,4 @@
+using System.Globalization;
 using ControWork_9.BLL.Services;
 using ControWork_9.BLL.Services.Interfaces;
 using ControWork_9.DAL.Data;
@@ -6,11 +7,17 @@ using ControWork_9.DAL.Repositories.Interfaces;
 using ControWork_9.Models;
 using ControWork_9.Models.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+
+[assembly: Microsoft.Extensions.Localization.RootNamespace("ControWork_9")]
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BalanceContext>(options => options.UseNpgsql(connection))
     .AddIdentity<User, IdentityRole<int>>(options =>
@@ -57,10 +64,23 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+var supportedCultures = new[]
+{
+    new CultureInfo("en"),
+    new CultureInfo("ru"),
+};
 
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("ru"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+localizationOptions.RequestCultureProviders.Insert(0, new CookieRequestCultureProvider());
+
+app.UseRequestLocalization(localizationOptions);
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
